@@ -41,7 +41,7 @@ go
 create or alter procedure insert_student @id varchar(20), @name varchar(20), @sex integer, @age integer,
                                          @src_place varchar(20), @class varchar(20), @year integer as
 begin
-    print @name + ' '+ @src_place
+    print @name + ' ' + @src_place
     insert into student (id, name, sex, age, src_place, credit, class)
     values (@id, @name, @sex, @age, (select id from src_place where name = @src_place), 0,
             (select id from class where name = @class and year = @year))

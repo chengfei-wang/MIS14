@@ -126,6 +126,7 @@ create or alter procedure init_course_open as
 begin
     exec insert_course_open 'G209031', '000001', N'移动应用开发方向01', '2018-1'
     exec insert_course_open 'G209031', '000001', N'移动应用开发方向02', '2018-1'
+    exec insert_course_open 'G210013', '000005', N'移动应用开发方向02', '2018-2'
     exec insert_course_open 'G209031', '000006', N'移动应用开发方向03', '2018-1'
     exec insert_course_open 'G209031', '000006', N'大数据方向01', '2018-1'
     exec insert_course_open 'G210002', '000002', N'移动应用开发方向01', '2018-1'
@@ -141,6 +142,7 @@ create or alter procedure init_score as
 begin
     exec insert_score 'G210013', '201806061219', 85
     exec insert_score 'G209031', '201806061219', 50
+    exec insert_score 'G210013', '201806061108', 100
     exec insert_score 'G209031', '201806061108', 87
 end
 go
@@ -161,3 +163,7 @@ end
 go
 
 exec init_all
+
+print dbo.calc_gpa('201806061219')
+
+print dbo.calc_avg('G209031', 2)
