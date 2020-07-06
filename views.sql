@@ -49,6 +49,7 @@ select course                                                                   
        class.year                                                                  class_year,
        teacher.id                                                                  teacher_id,
        teacher.name                                                                teacher_name,
+       semester.id                                                                 semester_id,
        cast(semester.year as varchar(20)) + '-' + cast(semester.no as varchar(20)) semester_name,
        dbo.calc_avg(course, class.id)                                              course_avg
 from course_open,
@@ -82,11 +83,12 @@ go
 create or alter view view_score as
 select student.id                                student_id,
        student.name                              student_name,
+       student.class                             class_id,
        course                                    course_id,
        _course.name                              course_name,
        iif(_course.type = 0, N'考试', N'考查')       course_type,
        iif(score.score >= 60, _course.credit, 0) course_credit,
-       score.score                               couese_score
+       score.score                               course_score
 from score,
      course _course,
      student
