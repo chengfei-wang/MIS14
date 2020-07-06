@@ -40,18 +40,19 @@ from course
 go
 
 create or alter view view_course_open as
-select course                                                                      course_id,
-       _course.name                                                                course_name,
-       iif(_course.type = 0, N'考试', N'考查')                                         course_type,
-       _course.credit                                                              course_credit,
-       class.id                                                                    class_id,
-       class.name                                                                  class_name,
-       class.year                                                                  class_year,
-       teacher.id                                                                  teacher_id,
-       teacher.name                                                                teacher_name,
-       semester.id                                                                 semester_id,
-       cast(semester.year as varchar(20)) + '-' + cast(semester.no as varchar(20)) semester_name,
-       dbo.calc_avg(course, class.id)                                              course_avg
+select course                              course_id,
+       _course.name                        course_name,
+       iif(_course.type = 0, N'考试', N'考查') course_type,
+       _course.credit                      course_credit,
+       class.id                            class_id,
+       class.name                          class_name,
+       class.year                          class_year,
+       teacher.id                          teacher_id,
+       teacher.name                        teacher_name,
+       semester.id                         semester_id,
+       semester.year                       semester_year,
+       semester.no                         semester_no,
+       dbo.calc_avg(course, class.id)      course_avg
 from course_open,
      course _course,
      class,
