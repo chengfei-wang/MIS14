@@ -1,28 +1,7 @@
 use wangchengfeiMIS14
 go
 
--- create trigger t_area_count
--- on student for insert, update, delete as
---     select distinct src_place _place, count(*) _count into #inserted from inserted
---     group by src_place update src_place
---     set count = count + (
---         select _count
---         from #inserted
---         where #inserted._place = src_place.id
---     )
---     where exists(select * from src_place where #deleted._place = src_place.id);
---     select distinct src_place _place, count(*) _count
---     into #deleted
---     from deleted
---     group by src_place update src_place
---     set count = count - (
---         select _count
---         from #deleted
---         where #deleted._place = src_place.id
---     )
---     where exists(select * from src_place where #inserted._place = src_place.id);
-
-create trigger t_src_place_count
+create or alter trigger t_src_place_count
     on student
     for insert, update, delete as
 begin
@@ -44,7 +23,7 @@ end
 
 go
 
-create trigger t_student_credit
+create or alter trigger t_student_credit
     on score
     for update, delete, insert as
 begin
@@ -52,8 +31,7 @@ begin
     declare @course_id integer
     declare @score integer
 
-    -- insert
-    declare cursor_insert cursor
+    declare cursor_insert cursor for
     select student, course, score from inserted
     open cursor_insert
     fetch next from cursor_insert into @student, @course_id, @score
@@ -67,9 +45,9 @@ begin
             fetch next from cursor_insert into @student, @course_id, @score
         end
     close cursor_insert
-    deallocate cursor_insert;
+    deallocate cursor_insert
 
-    declare cursor_delete cursor
+    declare cursor_delete cursor for
     select student, course, score from deleted
     open cursor_delete
     fetch next from cursor_delete into @student, @course_id, @score
@@ -80,10 +58,8 @@ begin
                     update student
                     set credit = credit - (select distinct credit from course where course.id = @course_id)
                 end
-            fetch next from cursor_insert into @student, @course_id, @score
+            fetch next from cursor_delete into @student, @course_id, @score
         end
-    close cursor_insert
-    deallocate cursor_insert;
-
-
+    close cursor_delete
+    deallocate cursor_delete
 end
