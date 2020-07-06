@@ -63,7 +63,7 @@ where course_open.course = _course.id
 go
 
 create or alter view view_major as
-select id   majer_id,
+select id   major_id,
        name major_name
 from major
 go
