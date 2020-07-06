@@ -26,6 +26,7 @@ begin
     exec insert_class N'移动应用开发方向01', N'软件工程', 2020, @class_id output
     exec insert_class N'移动应用开发方向02', N'软件工程', 2020, @class_id output
     exec insert_class N'移动应用开发方向03', N'软件工程', 2020, @class_id output
+    exec insert_class N'移动应用开发方向03', N'软件工程', 2018, @class_id output
     exec insert_class N'大数据方向01', N'软件工程', 2020, @class_id output
     exec insert_class N'大数据方向02', N'软件工程', 2020, @class_id output
     exec insert_class N'大数据方向03', N'软件工程', 2020, @class_id output
@@ -65,15 +66,15 @@ go
 
 create or alter procedure init_student as
 begin
-    exec insert_student '20180601219', N'王程飞', 0, 20, N'浙江省', N'移动应用开发方向02'
-    exec insert_student '20180601108', N'胡皓睿', 0, 20, N'浙江省', N'移动应用开发方向02'
-    exec insert_student '20180601201', N'陈昊天', 0, 21, N'浙江省', N'移动应用开发方向01'
-    exec insert_student '20180600001', N'学生01', 0, 20, N'河北省', N'移动应用开发方向03'
-    exec insert_student '20180600002', N'学生02', 1, 20, N'天津市', N'移动应用开发方向03'
-    exec insert_student '20180600003', N'学生03', 1, 20, N'天津市', N'移动应用开发方向03'
-    exec insert_student '20180600004', N'学生04', 1, 20, N'北京市', N'嵌入式方向01'
-    exec insert_student '20180600005', N'学生05', 0, 20, N'河北省', N'嵌入式方向01'
-    exec insert_student '20180600005', N'学生06', 0, 20, N'浙江省', N'嵌入式方向02'
+    exec insert_student '201806061219', N'王程飞', 0, 20, N'浙江省', N'移动应用开发方向02', 2020
+    exec insert_student '201806061108', N'胡皓睿', 0, 20, N'浙江省', N'移动应用开发方向02', 2020
+    exec insert_student '201806061201', N'陈昊天', 0, 21, N'浙江省', N'移动应用开发方向01', 2020
+    exec insert_student '201806060001', N'学生01', 0, 20, N'河北省', N'移动应用开发方向03', 2020
+    exec insert_student '201806060002', N'学生02', 1, 20, N'天津市', N'移动应用开发方向03', 2020
+    exec insert_student '201806060003', N'学生03', 1, 20, N'天津市', N'移动应用开发方向03', 2018
+    exec insert_student '201806060004', N'学生04', 1, 20, N'北京市', N'嵌入式方向01', 2020
+    exec insert_student '201806060005', N'学生05', 0, 20, N'河北省', N'嵌入式方向01', 2020
+    exec insert_student '201806060006', N'学生06', 0, 20, N'浙江省', N'嵌入式方向02', 2020
 end
 go
 
@@ -84,8 +85,8 @@ begin
     exec insert_course 'G210013', N'高等数学Ⅰ', 5, 80, 0
     exec insert_course 'G226002', N'程序设计基础C', 4, 64, 0
     exec insert_course 'G237002', N'中国近现代史纲要', 2, 32, 1
-    exec insert_course 'G331009', N'高分子材料的昨天、今天和明天', 2, 32, 1
-    exec insert_course '11370', N'大学生职业发展与就业指导（上）', 1, 16, 1
+    exec insert_course 'G331009', N'高分子材料', 2, 32, 1
+    exec insert_course '11370', N'大学生职业发展', 1, 16, 1
     exec insert_course '405024', N'互联网思维Ⅰ', 2, 32, 1
 end
 go
@@ -138,7 +139,9 @@ go
 
 create or alter procedure init_score as
 begin
-    return
+    exec insert_score 'G210013', '201806061219', 85
+    exec insert_score 'G209031', '201806061219', 50
+    exec insert_score 'G209031', '201806061108', 87
 end
 go
 
