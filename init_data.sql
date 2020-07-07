@@ -26,7 +26,7 @@ begin
     exec insert_class N'移动应用开发方向01', N'软件工程', 2020, @class_id output
     exec insert_class N'移动应用开发方向02', N'软件工程', 2020, @class_id output
     exec insert_class N'移动应用开发方向03', N'软件工程', 2020, @class_id output
-    exec insert_class N'移动应用开发方向03', N'软件工程', 2018, @class_id output
+    exec insert_class N'移动应用开发方向04', N'软件工程', 2018, @class_id output
     exec insert_class N'大数据方向01', N'软件工程', 2020, @class_id output
     exec insert_class N'大数据方向02', N'软件工程', 2020, @class_id output
     exec insert_class N'大数据方向03', N'软件工程', 2020, @class_id output
