@@ -20,7 +20,7 @@ create table src_place
 (
     id    integer primary key identity (1, 1),
     name  varchar(20) not null,
-    count integer not null default 0 check (count >= 0)
+    count integer     not null default 0 check (count >= 0)
 )
 
 create table student
