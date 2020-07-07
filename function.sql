@@ -10,11 +10,11 @@ begin
     declare @all_credit float = 0
 
     declare student_score cursor for
-        select course, credit, score
-        from score,
-             course _course
-        where _course.id = course
-          and student = @id
+        select wcf_course14, wcf_credit14, wcf_score14
+        from wangcf_score14,
+             wangcf_course14 _course
+        where _course.wcf_id14 = wcf_course14
+          and wcf_student14 = @id
     open student_score
     fetch next from student_score into @course, @credit, @score
     while @@fetch_status = 0
@@ -36,12 +36,12 @@ create or alter function calc_avg(@course varchar(20), @class integer) returns f
 as
 begin
     declare @avg float = 0
-    select @avg = avg(score)
-    from score,
-         student
-    where score.course = @course
-      and student.class = @class
-      and score.student = student.id
+    select @avg = avg(wcf_score14)
+    from wangcf_score14,
+         wangcf_student14
+    where wangcf_score14.wcf_course14 = @course
+      and wangcf_student14.wcf_class14 = @class
+      and wangcf_score14.wcf_student14 = wangcf_student14.wcf_id14
     return iif(@avg is null, 0, @avg)
 end
 go

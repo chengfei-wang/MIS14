@@ -1,97 +1,97 @@
 use wangchengfeiMIS14
 go
 
-create table major
+create table wangcf_major14
 (
-    id   integer primary key identity (1, 1),
-    name varchar(20) not null
+    wcf_id14   integer primary key identity (1, 1),
+    wcf_name14 varchar(20) not null
 )
 
-create table class
+create table wangcf_class14
 (
-    id    integer primary key identity (1, 1),
-    name  varchar(20) not null,
-    major integer,
-    year  integer     not null check (year > 2000),
-    constraint fk_class_major foreign key (major) references major (id) on update cascade on delete cascade
+    wcf_id14    integer primary key identity (1, 1),
+    wcf_name14  varchar(20) not null,
+    wcf_major14 integer,
+    wcf_year14  integer     not null check (wcf_year14 > 2000),
+    constraint wcf_fk_class_major14 foreign key (wcf_major14) references wangcf_major14 (wcf_id14) on update cascade on delete cascade
 )
 
-create table src_place
+create table wangcf_src_place14
 (
-    id    integer primary key identity (1, 1),
-    name  varchar(20) not null,
-    count integer     not null default 0 check (count >= 0)
+    wcf_id14    integer primary key identity (1, 1),
+    wcf_name14  varchar(20) not null,
+    wcf_count14 integer     not null default 0 check (wcf_count14 >= 0)
 )
 
-create table student
+create table wangcf_student14
 (
-    id        varchar(20) primary key,
-    name      varchar(20) not null,
-    sex       integer     not null check (sex = 0 or sex = 1), -- 0=男，1=女
-    age       integer     not null check (age > 0 and age < 200),
-    src_place integer     not null,
-    credit    integer     not null default 0 check (credit >= 0),
-    class     integer,
-    constraint fk_student_class foreign key (class) references class (id) on update cascade on delete cascade,
-    constraint fk_student_src_place foreign key (src_place) references src_place (id) on update cascade on delete cascade,
+    wcf_id14        varchar(20) primary key,
+    wcf_name14      varchar(20) not null,
+    wcf_sex14       integer     not null check (wcf_sex14 = 0 or wcf_sex14 = 1), -- 0=男，1=女
+    wcf_age14       integer     not null check (wcf_age14 > 0 and wcf_age14 < 200),
+    wcf_src_place14 integer     not null,
+    wcf_credit14    integer     not null default 0 check (wcf_credit14 >= 0),
+    wcf_class14     integer,
+    constraint wcf_fk_student_class14 foreign key (wcf_class14) references wangcf_class14 (wcf_id14) on update cascade on delete cascade,
+    constraint wcf_fk_student_src_place14 foreign key (wcf_src_place14) references wangcf_src_place14 (wcf_id14) on update cascade on delete cascade,
 )
 
-create table course
+create table wangcf_course14
 (
-    id          varchar(20) primary key,
-    name        varchar(20) not null,
-    credit      float       not null default 0 check (credit >= 0),
-    credit_hour float       not null default 0 check (credit_hour >= 0),
-    type        integer check (type = 0 or type = 1), -- 0=考试，1=考查
+    wcf_id14          varchar(20) primary key,
+    wcf_name14        varchar(20) not null,
+    wcf_credit14      float       not null default 0 check (wcf_credit14 >= 0),
+    wcf_credit_hour14 float       not null default 0 check (wcf_credit_hour14 >= 0),
+    wcf_type14        integer check (wcf_type14 = 0 or wcf_type14 = 1), -- 0=考试，1=考查
 )
 
-create table semester
+create table wangcf_semester14
 (
-    id   integer primary key identity (1, 1),
-    year integer not null check (year > 2000),
-    no   integer not null check (no = 1 or no = 2 or no = 3),
-    constraint u_year_no unique (year, no)
+    wcf_id14   integer primary key identity (1, 1),
+    wcf_year14 integer not null check (wcf_year14 > 2000),
+    wcf_no14  integer not null check (wcf_no14 = 1 or wcf_no14 = 2 or wcf_no14 = 3),
+    constraint wcf_u_year_no_14 unique (wcf_year14, wcf_no14)
 )
 
-create table title
+create table wangcf_title14
 (
-    id   integer primary key identity (1, 1),
-    name varchar(20) not null
+    wcf_id14   integer primary key identity (1, 1),
+    wcf_name14 varchar(20) not null
 )
 
 
-create table teacher
+create table wangcf_teacher14
 (
-    id    varchar(20) primary key,
-    name  varchar(20) not null,
-    sex   integer     not null check (sex = 0 or sex = 1), -- 0=男，1=女
-    age   integer     not null check (age > 0 and age < 200),
-    phone varchar(20),
-    title integer     not null,
-    constraint fk_teacher_title foreign key (title) references title (id)
+    wcf_id14    varchar(20) primary key,
+    wcf_name14  varchar(20) not null,
+    wcf_sex14   integer     not null check (wcf_sex14 = 0 or wcf_sex14 = 1), -- 0=男，1=女
+    wcf_age14   integer     not null check (wcf_age14 > 0 and wcf_age14 < 200),
+    wcf_phone14 varchar(20),
+    wcf_title14 integer     not null,
+    constraint wcf_fk_teacher_title14 foreign key (wcf_title14) references wangcf_title14 (wcf_id14)
 )
 
-create table course_open
+create table wangcf_course_open14
 (
-    id       integer     not null identity (1, 1),
-    course   varchar(20) not null,
-    teacher  varchar(20) not null,
-    class    integer     not null,
-    semester integer     not null,
-    constraint fk_open_course foreign key (course) references course (id) on update cascade on delete cascade,
-    constraint fk_open_teacher foreign key (teacher) references teacher (id) on update cascade on delete cascade,
-    constraint fk_open_class foreign key (class) references class (id) on update cascade on delete cascade,
-    constraint fk_open_semester foreign key (semester) references semester (id) on update cascade on delete cascade,
-    constraint u_course_open unique (course, class),
-    constraint pk_course_open primary key (id)
+    wcf_id14       integer     not null identity (1, 1),
+    wcf_course14   varchar(20) not null,
+    wcf_teacher14  varchar(20) not null,
+    wcf_class14    integer     not null,
+    wcf_semester14 integer     not null,
+    constraint wcf_fk_open_course14 foreign key (wcf_course14) references wangcf_course14 (wcf_id14) on update cascade on delete cascade,
+    constraint wcf_fk_open_teacher14 foreign key (wcf_teacher14) references wangcf_teacher14 (wcf_id14) on update cascade on delete cascade,
+    constraint wcf_fk_open_class14 foreign key (wcf_class14) references wangcf_class14 (wcf_id14) on update cascade on delete cascade,
+    constraint wcf_fk_open_semester14 foreign key (wcf_semester14) references wangcf_semester14 (wcf_id14) on update cascade on delete cascade,
+    constraint wcf_u_course_open14 unique (wcf_course14, wcf_class14),
+    constraint wcf_pk_course_open14 primary key (wcf_id14)
 )
 
-create table score
+create table wangcf_score14
 (
-    course  varchar(20) not null,
-    student varchar(20) not null,
-    score   integer     not null check (score >= 0 and score <= 100),
-    constraint fk_score_course foreign key (course) references course (id),
-    constraint fk_score_student foreign key (student) references student (id),
-    constraint u_course_open_student unique (course, student)
+    wcf_course14  varchar(20) not null,
+    wcf_student14 varchar(20) not null,
+    wcf_score14   integer     not null check (wcf_score14 >= 0 and wcf_score14 <= 100),
+    constraint wcf_fk_score_course14 foreign key (wcf_course14) references wangcf_course14 (wcf_id14),
+    constraint wcf_fk_score_student14 foreign key (wcf_student14) references wangcf_student14 (wcf_id14),
+    constraint wcf_u_course_open_student14 unique (wcf_course14, wcf_student14)
 )

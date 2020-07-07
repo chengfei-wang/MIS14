@@ -3,38 +3,42 @@ go
 
 create or alter procedure insert_major @name varchar(20), @major_id integer output as
 begin
-    insert into major (name) values (@name);
-    select @major_id = id from major where name = @name;
+    insert into wangcf_major14 (wcf_name14) values (@name);
+    select @major_id = wcf_id14 from wangcf_major14 where wcf_name14 = @name;
 end
 go
 
 create or alter procedure insert_class @name varchar(20), @major varchar(20), @year integer, @class_id integer output as
 begin
     declare @major_id integer
-    select @major_id = id from major where name = @major;
-    insert into class (name, major, year) values (@name, @major_id, @year)
-    select @class_id = id from class where name = @name and major = @major_id and year = @year
+    select @major_id = wcf_id14 from wangcf_major14 where wcf_name14 = @major;
+    insert into wangcf_class14 (wcf_name14, wcf_major14, wcf_year14) values (@name, @major_id, @year)
+    select @class_id = wcf_id14
+    from wangcf_class14
+    where wcf_name14 = @name
+      and wcf_major14 = @major_id
+      and wcf_year14 = @year
 end
 go
 
 create or alter procedure insert_src_place @src_place varchar(20), @src_place_id integer output as
 begin
-    insert into src_place (name, count) values (@src_place, 0)
-    select @src_place_id = id from src_place where name = @src_place;
+    insert into wangcf_src_place14 (wcf_name14, wcf_count14) values (@src_place, 0)
+    select @src_place_id = wcf_id14 from wangcf_src_place14 where wcf_name14 = @src_place;
 end
 go
 
 create or alter procedure insert_semester @year integer, @no integer, @semester_id integer output as
 begin
-    insert into semester (year, no) values (@year, @no)
-    select @semester_id = id from semester where year = @year and no = @no
+    insert into wangcf_semester14 (wcf_year14, wcf_no14) values (@year, @no)
+    select @semester_id = wcf_id14 from wangcf_semester14 where wcf_year14 = @year and wcf_no14 = @no
 end
 go
 
 create or alter procedure insert_title @name varchar(20), @title_id integer output as
 begin
-    insert into title (name) values (@name)
-    select @title_id = id from title where name = @name;
+    insert into wangcf_title14 (wcf_name14) values (@name)
+    select @title_id = wcf_id14 from wangcf_title14 where wcf_name14 = @name;
 end
 go
 
@@ -42,16 +46,23 @@ create or alter procedure insert_student @id varchar(20), @name varchar(20), @se
                                          @src_place varchar(20), @class varchar(20), @year integer as
 begin
     print @name + ' ' + @src_place
-    insert into student (id, name, sex, age, src_place, credit, class)
-    values (@id, @name, @sex, @age, (select id from src_place where name = @src_place), 0,
-            (select id from class where name = @class and year = @year))
+    insert into wangcf_student14 (wcf_id14, wcf_name14, wcf_sex14, wcf_age14, wcf_src_place14, wcf_credit14,
+                                  wcf_class14)
+    values (@id, @name, @sex, @age, (select wangcf_src_place14.wcf_id14
+                                     from wangcf_src_place14
+                                     where wangcf_src_place14.wcf_name14 = @src_place), 0,
+            (select wangcf_class14.wcf_id14
+             from wangcf_class14
+             where wangcf_class14.wcf_name14 = @class
+               and wcf_year14 = @year))
 end
 go
 
 create or alter procedure insert_course @id varchar(20), @name varchar(20), @credit integer, @credit_hour integer,
                                         @type integer as
 begin
-    insert into course (id, name, credit, credit_hour, type) values (@id, @name, @credit, @credit_hour, @type)
+    insert into wangcf_course14 (wcf_id14, wcf_name14, wcf_credit14, wcf_credit_hour14, wcf_type14)
+    values (@id, @name, @credit, @credit_hour, @type)
 end
 go
 
@@ -60,20 +71,21 @@ create or alter procedure insert_course_open @course varchar(20), @teacher varch
 begin
     declare @class_id integer
     set @class_id = null
-    select @class_id = id from class where name = @class
+    select @class_id = wcf_id14 from wangcf_class14 where wcf_name14 = @class
     declare @semester_id integer
     set @semester_id = null
-    select @semester_id = id
-    from semester
-    where year = cast(left(@semester, 4) as integer)
-      and no = cast(right(@semester, 1) as integer)
+    select @semester_id = wcf_id14
+    from wangcf_semester14
+    where wcf_year14 = cast(left(@semester, 4) as integer)
+      and wcf_no14 = cast(right(@semester, 1) as integer)
     if @class_id is null or @class_id is null
         begin
             print 'course_open ' + @course + ' class' + @class + ' or semester ' +
                   @semester + ' not found'
             return
         end
-    insert into course_open (course, teacher, class, semester) values (@course, @teacher, @class_id, @semester_id)
+    insert into wangcf_course_open14 (wcf_course14, wcf_teacher14, wcf_class14, wcf_semester14)
+    values (@course, @teacher, @class_id, @semester_id)
 end
 go
 
@@ -81,14 +93,14 @@ create or alter procedure insert_teacher @id varchar(20), @name varchar(20), @se
                                          @phone varchar(20), @title varchar(20) as
 begin
     declare @title_id integer
-    select @title_id = id from title where title.name = @title
-    insert into teacher (id, name, sex, age, phone, title)
+    select @title_id = wcf_id14 from wangcf_title14 where wangcf_title14.wcf_name14 = @title
+    insert into wangcf_teacher14 (wcf_id14, wcf_name14, wcf_sex14, wcf_age14, wcf_phone14, wcf_title14)
     values (@id, @name, @sex, @age, @phone, @title_id)
 end
 go
 
 create or alter procedure insert_score @course varchar(20), @student varchar(20), @score integer as
 begin
-    insert into score (course, student, score) values (@course, @student, @score)
+    insert into wangcf_score14 (wcf_course14, wcf_student14, wcf_score14) values (@course, @student, @score)
 end
 go

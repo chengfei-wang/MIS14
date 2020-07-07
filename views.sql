@@ -2,129 +2,129 @@ use wangchengfeiMIS14
 go
 
 create or alter view view_student as
-select student.id               student_id,
-       student.name             student_name,
-       iif(sex = 0, N'男', N'女') student_sex,
-       age                      student_age,
-       place.name               student_place,
-       credit                   student_credit,
-       dbo.calc_gpa(student.id) student_gpa,
-       _class.id                class_id,
-       _class.name              class_name
-from student,
-     src_place place,
-     class _class
-where src_place = place.id
-  and class = _class.id
+select student.wcf_id14                       student_id,
+       student.wcf_name14                     student_name,
+       iif(student.wcf_sex14 = 0, N'男', N'女') student_sex,
+       student.wcf_age14                      student_age,
+       place.wcf_name14                       student_place,
+       student.wcf_credit14                   student_credit,
+       dbo.calc_gpa(student.wcf_id14)         student_gpa,
+       class.wcf_id14                         class_id,
+       class.wcf_name14                       class_name
+from wangcf_student14 student,
+     wangcf_src_place14 place,
+     wangcf_class14 class
+where wcf_src_place14 = place.wcf_id14
+  and wcf_class14 = class.wcf_id14
 go
 
 create or alter view view_teacher as
-select teacher.id               teacher_id,
-       teacher.name             teacher_name,
-       iif(sex = 0, N'男', N'女') teacher_sex,
-       age                      teacher_age,
-       phone                    teacher_phone,
-       _title.name              teacher_title
-from teacher,
-     title _title
-where _title.id = title;
+select teacher.wcf_id14               teacher_id,
+       teacher.wcf_name14             teacher_name,
+       iif(wcf_sex14 = 0, N'男', N'女') teacher_sex,
+       teacher.wcf_age14              teacher_age,
+       teacher.wcf_phone14            teacher_phone,
+       title.wcf_name14               teacher_title
+from wangcf_teacher14 teacher,
+     wangcf_title14 title
+where title.wcf_id14 = wcf_title14;
 go
 
 create or alter view view_course as
-select id                          course_id,
-       name                        course_name,
-       credit                      course_credit,
-       credit_hour                 course_credit_hour,
-       iif(type = 0, N'考试', N'考查') course_type
-from course
+select course.wcf_id14                          course_id,
+       course.wcf_name14                        course_name,
+       course.wcf_credit14                      course_credit,
+       course.wcf_credit_hour14                 course_credit_hour,
+       iif(course.wcf_type14 = 0, N'考试', N'考查') course_type
+from wangcf_course14 course
 go
 
 create or alter view view_course_open as
-select course                              course_id,
-       _course.name                        course_name,
-       iif(_course.type = 0, N'考试', N'考查') course_type,
-       _course.credit                      course_credit,
-       class.id                            class_id,
-       class.name                          class_name,
-       class.year                          class_year,
-       teacher.id                          teacher_id,
-       teacher.name                        teacher_name,
-       semester.id                         semester_id,
-       semester.year                       semester_year,
-       semester.no                         semester_no,
-       dbo.calc_avg(course, class.id)      course_avg
-from course_open,
-     course _course,
-     class,
-     teacher,
-     semester
-where course_open.course = _course.id
-  and course_open.teacher = teacher.id
-  and course_open.class = class.id
-  and course_open.semester = semester.id
+select course_open.wcf_course14                   course_id,
+       course.wcf_name14                          course_name,
+       iif(course.wcf_type14 = 0, N'考试', N'考查')   course_type,
+       course.wcf_credit14                        course_credit,
+       class.wcf_id14                             class_id,
+       class.wcf_name14                           class_name,
+       class.wcf_year14                           class_year,
+       teacher.wcf_id14                           teacher_id,
+       teacher.wcf_name14                         teacher_name,
+       semester.wcf_id14                          semester_id,
+       semester.wcf_year14                        semester_year,
+       semester.wcf_no14                          semester_no,
+       dbo.calc_avg(wcf_course14, class.wcf_id14) course_avg
+from wangcf_course_open14 course_open,
+     wangcf_course14 course,
+     wangcf_class14 class,
+     wangcf_teacher14 teacher,
+     wangcf_semester14 semester
+where course_open.wcf_course14 = course.wcf_id14
+  and course_open.wcf_teacher14 = teacher.wcf_id14
+  and course_open.wcf_class14 = class.wcf_id14
+  and course_open.wcf_semester14 = semester.wcf_id14
 go
 
 create or alter view view_major as
-select id   major_id,
-       name major_name
-from major
+select major.wcf_id14   major_id,
+       major.wcf_name14 major_name
+from wangcf_major14 major
 go
 
 create or alter view view_class as
-select major.id   major_id,
-       major.name major_name,
-       class.id   class_id,
-       class.name class_name,
-       class.year class_year
-from class,
-     major
-where class.major = major.id
+select major.wcf_id14   major_id,
+       major.wcf_name14 major_name,
+       class.wcf_id14   class_id,
+       class.wcf_name14 class_name,
+       class.wcf_year14 class_year
+from wangcf_class14 class,
+     wangcf_major14 major
+where class.wcf_major14 = major.wcf_id14
 go
 
 create or alter view view_score as
-select student.id                                student_id,
-       student.name                              student_name,
-       student.class                             class_id,
-       course                                    course_id,
-       _course.name                              course_name,
-       iif(_course.type = 0, N'考试', N'考查')       course_type,
-       iif(score.score >= 60, _course.credit, 0) course_credit,
-       score.score                               course_score
-from score,
-     course _course,
-     student
-where score.student = student.id
-  and score.course = _course.id
+select student.wcf_id14                                     student_id,
+       student.wcf_name14                                   student_name,
+       student.wcf_class14                                  class_id,
+       score.wcf_course14                                   course_id,
+       course.wcf_name14                                    course_name,
+       iif(course.wcf_type14 = 0, N'考试', N'考查')             course_type,
+       iif(score.wcf_score14 >= 60, course.wcf_credit14, 0) course_credit,
+       score.wcf_score14                                    course_score
+from wangcf_score14 score,
+     wangcf_course14 course,
+     wangcf_student14 student
+where score.wcf_student14 = student.wcf_id14
+  and score.wcf_course14 = course.wcf_id14
 go
 
-create view view_src_place as
-select id    place_id,
-       name  place_name,
-       count place_count
-from src_place;
+create or alter view view_src_place as
+select src_place.wcf_id14    place_id,
+       src_place.wcf_name14  place_name,
+       src_place.wcf_count14 place_count
+from wangcf_src_place14 src_place;
 go
 
 create or alter view view_score_info as
-select _student.id    student_id,
-       _student.name  student_name,
-       _semester.year  semester_year,
-       _semester.no    semester_name,
-       _teacher.id    teacher_id,
-       _teacher.name  teacher_name,
-       _class.id      class_id,
-       _class.name    class_name,
-       _course.id   course_id,
-       _course.name   course_name,
-       _course.credit course_credit
-from course_open,
-     semester _semester,
-     student _student,
-     teacher _teacher,
-     course _course,
-     class _class
-where course_open.semester = _semester.id
-  and course_open.teacher = _teacher.id
-  and course_open.class = _class.id
-  and _class.id = _student.class
-  and course_open.course = _course.id
+select _student.wcf_id14    student_id,
+       _student.wcf_name14  student_name,
+       _semester.wcf_year14 semester_year,
+       _semester.wcf_no14   semester_name,
+       _teacher.wcf_id14    teacher_id,
+       _teacher.wcf_name14  teacher_name,
+       _class.wcf_id14      class_id,
+       _class.wcf_name14    class_name,
+       _course.wcf_id14     course_id,
+       _course.wcf_name14   course_name,
+       _course.wcf_credit14 course_credit
+from wangcf_course_open14 course_open,
+     wangcf_semester14 _semester,
+     wangcf_student14 _student,
+     wangcf_teacher14 _teacher,
+     wangcf_course14 _course,
+     wangcf_class14 _class
+where course_open.wcf_semester14 = _semester.wcf_id14
+  and course_open.wcf_teacher14 = _teacher.wcf_id14
+  and course_open.wcf_class14 = _class.wcf_id14
+  and _class.wcf_id14 = _student.wcf_class14
+  and course_open.wcf_course14 = _course.wcf_id14
 go
