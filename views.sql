@@ -96,3 +96,35 @@ from score,
 where score.student = student.id
   and score.course = _course.id
 go
+
+create view view_src_place as
+select id    place_id,
+       name  place_name,
+       count place_count
+from src_place;
+go
+
+create or alter view view_score_info as
+select _student.id    student_id,
+       _student.name  student_name,
+       _semester.year  semester_year,
+       _semester.no    semester_name,
+       _teacher.id    teacher_id,
+       _teacher.name  teacher_name,
+       _class.id      class_id,
+       _class.name    class_name,
+       _course.id   course_id,
+       _course.name   course_name,
+       _course.credit course_credit
+from course_open,
+     semester _semester,
+     student _student,
+     teacher _teacher,
+     course _course,
+     class _class
+where course_open.semester = _semester.id
+  and course_open.teacher = _teacher.id
+  and course_open.class = _class.id
+  and _class.id = _student.class
+  and course_open.course = _course.id
+go
