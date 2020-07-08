@@ -116,15 +116,15 @@ select _student.wcf_id14    student_id,
        _course.wcf_id14     course_id,
        _course.wcf_name14   course_name,
        _course.wcf_credit14 course_credit
-from wangcf_course_open14 course_open,
+from wangcf_course_open14 _course_open,
      wangcf_semester14 _semester,
      wangcf_student14 _student,
      wangcf_teacher14 _teacher,
      wangcf_course14 _course,
      wangcf_class14 _class
-where course_open.wcf_semester14 = _semester.wcf_id14
-  and course_open.wcf_teacher14 = _teacher.wcf_id14
-  and course_open.wcf_class14 = _class.wcf_id14
+where _course_open.wcf_semester14 = _semester.wcf_id14
+  and _course_open.wcf_teacher14 = _teacher.wcf_id14
+  and _course_open.wcf_class14 = _class.wcf_id14
   and _class.wcf_id14 = _student.wcf_class14
-  and course_open.wcf_course14 = _course.wcf_id14
+  and _course_open.wcf_course14 = _course.wcf_id14
 go
